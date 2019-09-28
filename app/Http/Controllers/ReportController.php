@@ -30,4 +30,24 @@ class ReportController extends Controller
 
         return json_encode(['result' => $ok]);
     }
+
+    public function edit(Request $request){
+        if(!$request->meeting_id) return json_encode([
+            'result' => false,
+            'error' => 'Required parameter meeting_id missed'
+        ]);
+
+        $data = [];
+        if($request->duration) $data['duration'] = $request->duration;
+        if($request->plan_actions) $data['plan_actions'] = $request->plan_actions;
+        if($request->real_actions) $data['real_actions'] = $request->real_actions;
+        if($request->child_mood) $data['child_mood'] = $request->child_mood;
+        if($request->next_points) $data['next_points'] = $request->next_points;
+        if($request->mentor_mood) $data['mentor_mood'] = $request->mentor_mood;
+        if($request->answers) $data['answers'] = $request->answers;
+
+        $ok = DB::table(reports)->where('meeting_id', $request->meeting_id)->update($data);
+
+        return json_encode(['result' => $ok]);
+    }
 }

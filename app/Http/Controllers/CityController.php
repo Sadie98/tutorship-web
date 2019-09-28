@@ -9,35 +9,22 @@ use mysql_xdevapi\Exception;
 class CityController extends Controller
 {
     public function getAll(){
-        $cities = DB::table('cities')->get();
-
-        return $cities;
+        return json_encode(DB::table('cities')->get());
     }
 
     public function add(Request $request){
         $data = [
-            'name' => '',
-            'website' => '',
-            'logo' => '',
-            'description' => '',
-            'email' => '',
-            'voice' => ''
+            'name' => $request->name??'',
+            'website' => $request->websitge??'',
+            'logo' => $request->logo??'',
+            'description' => $request->description??'',
+            'email' => $request->email??'',
+            'voice' => $request->voice??''
         ];
-        try{
-            if ($request->name) {
-                $data['name'] = $request->name;
-            }else{
-                throw new Exception('Required parameter name missed');
-            }
-            if ($request->website) $data['website'] = $request->website;
-            if ($request->logo) $data['logo'] = $request->logo;
-            if ($request->description) $data['description'] = $request->description;
-            if ($request->email) $data['email'] = $request->email;
-            if ($request->voice) $data['voice'] = $request->voice;
-        }catch (\Exception $e){
+        if(!$data['name']){
             return json_encode([
                 'result' => false,
-                'error' => $e->getMessage()
+                'error' => 'Required parameter name missed'
             ]);
         }
 

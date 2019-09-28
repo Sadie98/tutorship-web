@@ -21,7 +21,10 @@ Route::get('/meetings', function () {
     return view('layouts/app');
 });
 
-Route::get('/cities/', 'CityController@getAll');
-Route::post('/city', 'CityController@add');
+Route::post('/get/user', 'UserController@get');
+Route::post('/add/user', 'UserController@add');
 
-Route::post('/news', 'NewsController@get');
+Route::get('/get/cities/', 'CityController@getAll');
+Route::post('/add/city', 'CityController@add');
+
+Route::post('/get/news', 'NewsController@get');

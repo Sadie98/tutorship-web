@@ -13,7 +13,17 @@ class MeetingController extends Controller
             'error' => 'Required parameter mentor_id missed'
         ]);
 
-        return json_encode(DB::table('meetings')->get()->where('mentor_id', $request->mentor_id));
+        $res = DB::select("SELECT `meetings`.*, 
+            CONCAT(`childUser`.`name`, ' ', `childUser`.`surname`) `child`,
+            CONCAT(`mentorUser`.`name`, ' ', `mentorUser`.`surname`) `mentor`,
+            CONCAT(`curatorUser`.`name`, ' ', `curatorUser`.`surname`) `curator`
+            FROM `meetings`
+            LEFT JOIN `users`  as `childUser` ON `meetings`.`child_id` = `childUser`.`id`
+            LEFT JOIN `users`  as `mentorUser` ON `meetings`.`mentor_id` = `mentorUser`.`id`
+            LEFT JOIN `users`  as `curatorUser` ON `meetings`.`curator_id` = `curatorUser`.`id`
+            WHERE `mentorUser`.`id` = '".(int)$request->mentor_id."'");
+
+        return $res;
     }
 
     public function getByCurator(Request $request){
@@ -22,7 +32,7 @@ class MeetingController extends Controller
             'error' => 'Required parameter curator_id missed'
         ]);
 
-        return json_encode(DB::table('meetings')->get()->where('curator_id', $request->curator_id));
+        return json_encode(DB::table('meetings')->where('curator_id', $request->curator_id))->get();
     }
 
     public function getById(Request $request){
@@ -31,7 +41,7 @@ class MeetingController extends Controller
             'error' => 'Required parameter id missed'
         ]);
 
-        return json_encode(DB::table('meetings')->get()->where('id', $request->id));
+        return json_encode(DB::table('meetings')->where('id', $request->id))->get();
     }
 
     public function add(Request $request){

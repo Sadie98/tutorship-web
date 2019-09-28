@@ -13,7 +13,8 @@ class UserController extends Controller
             'error' => 'Required parameter id missed'
         ]);
 
-        return json_encode(DB::table('users')->get()->where('id', $request->id));
+        $res = DB::table('users')->where('id', $request->id)->get()[0]??'';
+        return json_encode($res, JSON_UNESCAPED_UNICODE);
     }
 
     public function add(Request $request){
@@ -25,7 +26,8 @@ class UserController extends Controller
             'city' => $request->city??'',
             'role' => $request->role??'',
             'workplace' => $request->workplace??'',
-            'avatar' => $request->avatar??''
+            'avatar' => $request->avatar??'',
+            'email' => $request->email??''
         ];
         if(!$data['name']){
             return json_encode([

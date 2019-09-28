@@ -9,7 +9,7 @@ use mysql_xdevapi\Exception;
 class CityController extends Controller
 {
     public function getAll(){
-        return json_encode(DB::table('cities')->get());
+        return json_encode(DB::table('cities')->get(), JSON_UNESCAPED_UNICODE);
     }
 
     public function add(Request $request){

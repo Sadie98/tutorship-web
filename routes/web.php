@@ -24,4 +24,4 @@ Route::get('/meetings', function () {
 Route::get('/cities/', 'CityController@getAll');
 Route::post('/city', 'CityController@add');
 
-Route::get('/news/{city}', 'NewsController@get');
+Route::post('/news', 'NewsController@get');

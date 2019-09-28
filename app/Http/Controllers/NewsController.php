@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
-    public function get(string $city){
-        $news = DB::table('news')->get()->where('city', $city);
+    public function get(Request $request){
+        $news = DB::table('news')->get()->where('city', $request->city);
 
         return json_encode($news, JSON_UNESCAPED_UNICODE);
     }

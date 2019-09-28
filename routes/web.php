@@ -18,3 +18,9 @@ Route::get('/get/cities/', 'CityController@getAll');
 Route::post('/add/city', 'CityController@add');
 
 Route::post('/get/news', 'NewsController@get');
+
+Route::post('/get/meeting-by-id', 'MeetingController@getById');
+Route::post('/get/meeting-by-mentor-id', 'MeetingController@getByMentorId');
+Route::post('/get/meeting-by-curator-id', 'MeetingController@getByCuratorId');
+Route::post('/add/meeting', 'MeetingController@add');
+

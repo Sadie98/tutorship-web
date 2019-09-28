@@ -11,16 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('layouts/app');
-});
-Route::get('/profile', function () {
-    return view('layouts/app');
-});
-Route::get('/meetings', function () {
-    return view('layouts/app');
-});
-
 Route::post('/get/user', 'UserController@get');
 Route::post('/add/user', 'UserController@add');
 

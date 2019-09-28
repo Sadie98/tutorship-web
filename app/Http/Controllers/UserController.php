@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\DB;
 class UserController extends Controller
 {
     public function get(Request $request){
+        if(!$request->id) return json_encode([
+            'result' => false,
+            'error' => 'Required parameter id missed'
+        ]);
+
         return json_encode(DB::table('users')->get()->where('id', $request->id));
     }
 
@@ -16,12 +21,18 @@ class UserController extends Controller
             'name' => $request->name??'',
             'surname' => $request->surname??'',
             'patronymic' => $request->patronymic??'',
-            'age' => $request->age??'',
+            'age' => (int)$request->age??0,
             'city' => $request->city??'',
             'role' => $request->role??'',
             'workplace' => $request->workplace??'',
             'avatar' => $request->avatar??''
         ];
+        if(!$data['name']){
+            return json_encode([
+                'result' => false,
+                'error' => 'Required parameter name missed'
+            ]);
+        }
 
         $ok = DB::table('users')->insert($data);
 

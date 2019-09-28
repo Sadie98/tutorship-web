@@ -11,6 +11,8 @@
 |
 */
 
+use App\Http\Controllers\GalaryController;
+
 Route::post('/get/user', 'UserController@get');
 Route::post('/add/user', 'UserController@add');
 
@@ -24,3 +26,4 @@ Route::post('/get/meeting-by-mentor-id', 'MeetingController@getByMentor');
 Route::post('/get/meeting-by-curator-id', 'MeetingController@getByCurator');
 Route::post('/add/meeting', 'MeetingController@add');
 
+Route::post('get/photos', 'GalaryController@get');

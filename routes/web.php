@@ -27,5 +27,4 @@ Route::prefix('jobs')->group(function(){
 	Route::post('create', 'TaskController@store')->name('jobs.store');
 });
 
-Route::get('/user', 'TaskController@index');
-
+Route::get('/news/{city}', 'NewsController@get');

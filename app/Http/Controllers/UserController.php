@@ -15,7 +15,7 @@ class UserController extends Controller
 
         $sel = DB::table('users')->where('id', $request->id);
 
-        if($request->app) $res = $request->app?$sel->first():$sel->get();
+        $res = $request->app?$sel->first():$sel->get();
 
         return json_encode($res, JSON_UNESCAPED_UNICODE);
     }

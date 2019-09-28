@@ -7,13 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class MeetingController extends Controller
 {
-    public function getByMentor(Request $request){
-        if(!$request->mentor_id) return json_encode([
-            'result' => false,
-            'error' => 'Required parameter mentor_id missed'
-        ]);
-
-        $res = DB::select("SELECT `meetings`.*, 
+    var $joinsQuery = "SELECT `meetings`.*, `reports`.*,
             CONCAT(`childUser`.`name`, ' ', `childUser`.`surname`) `child`,
             CONCAT(`mentorUser`.`name`, ' ', `mentorUser`.`surname`) `mentor`,
             CONCAT(`curatorUser`.`name`, ' ', `curatorUser`.`surname`) `curator`
@@ -21,7 +15,15 @@ class MeetingController extends Controller
             LEFT JOIN `users`  as `childUser` ON `meetings`.`child_id` = `childUser`.`id`
             LEFT JOIN `users`  as `mentorUser` ON `meetings`.`mentor_id` = `mentorUser`.`id`
             LEFT JOIN `users`  as `curatorUser` ON `meetings`.`curator_id` = `curatorUser`.`id`
-            WHERE `mentorUser`.`id` = '".(int)$request->mentor_id."'");
+            LEFT JOIN `reports` ON `meetings`.`id` = `reports`.`meeting_id`";
+
+    public function getByMentor(Request $request){
+        if(!$request->mentor_id) return json_encode([
+            'result' => false,
+            'error' => 'Required parameter mentor_id missed'
+        ]);
+
+        $res = DB::select($this->joinsQuery." WHERE `mentorUser`.`id` = '".(int)$request->mentor_id."'");
 
         return $res;
     }
@@ -32,15 +34,7 @@ class MeetingController extends Controller
             'error' => 'Required parameter curator_id missed'
         ]);
 
-        $res = DB::select("SELECT `meetings`.*, 
-            CONCAT(`childUser`.`name`, ' ', `childUser`.`surname`) `child`,
-            CONCAT(`mentorUser`.`name`, ' ', `mentorUser`.`surname`) `mentor`,
-            CONCAT(`curatorUser`.`name`, ' ', `curatorUser`.`surname`) `curator`
-            FROM `meetings`
-            LEFT JOIN `users`  as `childUser` ON `meetings`.`child_id` = `childUser`.`id`
-            LEFT JOIN `users`  as `mentorUser` ON `meetings`.`mentor_id` = `mentorUser`.`id`
-            LEFT JOIN `users`  as `curatorUser` ON `meetings`.`curator_id` = `curatorUser`.`id`
-            WHERE `mentorUser`.`id` = '".(int)$request->curator_id."'");
+        $res = DB::select($this->joinsQuery." WHERE `mentorUser`.`id` = '".(int)$request->curator_id."'");
 
         return $res;
     }
@@ -51,15 +45,7 @@ class MeetingController extends Controller
             'error' => 'Required parameter id missed'
         ]);
 
-        $res = DB::select("SELECT `meetings`.*, 
-            CONCAT(`childUser`.`name`, ' ', `childUser`.`surname`) `child`,
-            CONCAT(`mentorUser`.`name`, ' ', `mentorUser`.`surname`) `mentor`,
-            CONCAT(`curatorUser`.`name`, ' ', `curatorUser`.`surname`) `curator`
-            FROM `meetings`
-            LEFT JOIN `users`  as `childUser` ON `meetings`.`child_id` = `childUser`.`id`
-            LEFT JOIN `users`  as `mentorUser` ON `meetings`.`mentor_id` = `mentorUser`.`id`
-            LEFT JOIN `users`  as `curatorUser` ON `meetings`.`curator_id` = `curatorUser`.`id`
-            WHERE `meetings`.`id` = '".(int)$request->id."'");
+        $res = DB::select($this->joinsQuery." WHERE `meetings`.`id` = '".(int)$request->id."'");
 
         return $res;
     }

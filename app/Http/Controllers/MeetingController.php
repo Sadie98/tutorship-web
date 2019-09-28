@@ -30,7 +30,7 @@ class MeetingController extends Controller
                 $_meeting->todo = $res[$meetingIndex + 1]->next_points;
             }
         }
-
+        
         return json_encode($res, JSON_UNESCAPED_UNICODE);
     }
 

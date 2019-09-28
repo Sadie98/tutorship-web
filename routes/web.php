@@ -30,3 +30,5 @@ Route::post('/add/meeting', 'MeetingController@add');
 Route::post('get/photos', 'GalaryController@get');
 
 Route::post('add/report', 'ReportController@add');
+
+Route::post('get/rels', 'RelsController@get');

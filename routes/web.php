@@ -12,18 +12,11 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('layouts/app');
 });
-Auth::routes();
-
-Route::get('/news', function () {
-    return view('news');
+Route::get('/profile', function () {
+    return view('layouts/app'');
 });
-
-Route::prefix('jobs')->group(function(){
-	Route::get('create', 'TaskController@create');
-	Route::post('create', 'TaskController@store')->name('jobs.store');
+Route::get('/meetings', function () {
+    return view('layouts/app'');
 });
-
-Route::get('/user', 'TaskController@index');
-

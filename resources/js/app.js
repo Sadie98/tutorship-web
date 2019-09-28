@@ -5,25 +5,36 @@
  */
 
 import Vue from 'vue'
-import Vuetify from 'vuetify'
+// import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
-
 
 
 //
 // require('./bootstrap');
 
 window.Vue = require('vue');
+// window.Vuetify = require('vuetify');
+// let Vuetify = require('vuetify');
 
-Vue.use(Vuetify, { theme: {
-        primary: '#2196f3',
-        secondary: '#424242',
-        accent: '#82B1FF',
-        error: '#FF5252',
-        info: '#2196F3',
-        success: '#4CAF50',
-        warning: '#FFC107'
-    }});
+import '@mdi/font/css/materialdesignicons.css'
+import Vuetify, {
+    VCard,
+    VAvatar,
+    VApp,
+    VBtn,
+    VCalendar,
+    VTextarea,
+    VCarousel,
+    VIcon,
+    VImg
+} from 'vuetify/lib'
+
+import VGrid from 'vuetify/lib/components/VGrid'
+import VLayout from 'vuetify/lib/components/VGrid/VLayout'
+import VContainer from 'vuetify/lib/components/VGrid/VContainer'
+import VFlex from 'vuetify/lib/components/VGrid/VFlex'
+import VCol from 'vuetify/lib/components/VGrid/VCol'
+import colors from 'vuetify/lib/util/colors'
 
 import VueRouter from 'vue-router'
 import router from './router'
@@ -42,11 +53,42 @@ import App from './components/App'
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 // Vue.component('profile', require('./components/Profile.vue').default);
-
+Vue.use(Vuetify, {
+    icons: {
+        iconfont: 'mdi', // default - only for display purposes
+    },
+    components: {
+        VCard,
+        VAvatar,
+        VApp,
+        VBtn,
+        VCalendar,
+        VGrid,
+        VTextarea,
+        VCarousel,
+        VIcon,
+        VImg,
+        VLayout,
+        VContainer,
+        VCol,
+        VFlex
+    },
+    theme: {
+        themes: {
+            light: {
+                primary: colors.red.darken1, // #E53935
+                secondary: colors.red.lighten4, // #FFCDD2
+                accent: colors.indigo.base, // #3F51B5
+            },
+        },
+    },
+});
 Vue.use(VueRouter);
 
+const opts = {};
 const app = new Vue({
     el: '#app',
+    vuetify: new Vuetify(opts),
     render: h => h(App),
     router
 });

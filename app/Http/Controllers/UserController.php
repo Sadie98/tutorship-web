@@ -13,7 +13,10 @@ class UserController extends Controller
             'error' => 'Required parameter id missed'
         ]);
 
-        $res = DB::table('users')->where('id', $request->id)->get()[0]??'';
+        $sel = DB::table('users')->where('id', $request->id);
+
+        if($request->app) $res = $request->app?$sel->first():$sel->get();
+
         return json_encode($res, JSON_UNESCAPED_UNICODE);
     }
 

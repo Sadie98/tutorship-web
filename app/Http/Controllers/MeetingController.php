@@ -32,7 +32,17 @@ class MeetingController extends Controller
             'error' => 'Required parameter curator_id missed'
         ]);
 
-        return json_encode(DB::table('meetings')->where('curator_id', $request->curator_id))->get();
+        $res = DB::select("SELECT `meetings`.*, 
+            CONCAT(`childUser`.`name`, ' ', `childUser`.`surname`) `child`,
+            CONCAT(`mentorUser`.`name`, ' ', `mentorUser`.`surname`) `mentor`,
+            CONCAT(`curatorUser`.`name`, ' ', `curatorUser`.`surname`) `curator`
+            FROM `meetings`
+            LEFT JOIN `users`  as `childUser` ON `meetings`.`child_id` = `childUser`.`id`
+            LEFT JOIN `users`  as `mentorUser` ON `meetings`.`mentor_id` = `mentorUser`.`id`
+            LEFT JOIN `users`  as `curatorUser` ON `meetings`.`curator_id` = `curatorUser`.`id`
+            WHERE `mentorUser`.`id` = '".(int)$request->curator_id."'");
+
+        return $res;
     }
 
     public function getById(Request $request){
@@ -41,7 +51,17 @@ class MeetingController extends Controller
             'error' => 'Required parameter id missed'
         ]);
 
-        return json_encode(DB::table('meetings')->where('id', $request->id))->get();
+        $res = DB::select("SELECT `meetings`.*, 
+            CONCAT(`childUser`.`name`, ' ', `childUser`.`surname`) `child`,
+            CONCAT(`mentorUser`.`name`, ' ', `mentorUser`.`surname`) `mentor`,
+            CONCAT(`curatorUser`.`name`, ' ', `curatorUser`.`surname`) `curator`
+            FROM `meetings`
+            LEFT JOIN `users`  as `childUser` ON `meetings`.`child_id` = `childUser`.`id`
+            LEFT JOIN `users`  as `mentorUser` ON `meetings`.`mentor_id` = `mentorUser`.`id`
+            LEFT JOIN `users`  as `curatorUser` ON `meetings`.`curator_id` = `curatorUser`.`id`
+            WHERE `meetings`.`id` = '".(int)$request->id."'");
+
+        return $res;
     }
 
     public function add(Request $request){

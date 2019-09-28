@@ -23,9 +23,15 @@ class MeetingController extends Controller
             'error' => 'Required parameter mentor_id missed'
         ]);
 
-        $res = DB::select($this->joinsQuery." WHERE `mentorUser`.`id` = '".(int)$request->mentor_id."'");
+        $res = (array)DB::select($this->joinsQuery." WHERE `mentorUser`.`id` = '".(int)$request->mentor_id."' ORDER BY `meetings`.`date` DESC");
 
-        return $res;
+        foreach($res as $meetingIndex => &$_meeting){
+            if(isset($res[$meetingIndex + 1]) && $res[$meetingIndex + 1]->next_points){
+                $_meeting->todo = $res[$meetingIndex + 1]->next_points;
+            }
+        }
+
+        return json_encode($res, JSON_UNESCAPED_UNICODE);
     }
 
     public function getByCurator(Request $request){
@@ -34,9 +40,9 @@ class MeetingController extends Controller
             'error' => 'Required parameter curator_id missed'
         ]);
 
-        $res = DB::select($this->joinsQuery." WHERE `mentorUser`.`id` = '".(int)$request->curator_id."'");
+        $res = DB::select($this->joinsQuery." WHERE `mentorUser`.`id` = '".(int)$request->curator_id."' ORDER BY `meetings`.`date` DESC");
 
-        return $res;
+        return json_encode($res, JSON_UNESCAPED_UNICODE);
     }
 
     public function getById(Request $request){
@@ -45,9 +51,9 @@ class MeetingController extends Controller
             'error' => 'Required parameter id missed'
         ]);
 
-        $res = DB::select($this->joinsQuery." WHERE `meetings`.`id` = '".(int)$request->id."'");
+        $res = DB::select($this->joinsQuery." WHERE `meetings`.`id` = '".(int)$request->id."' ORDER BY `meetings`.`date` DESC");
 
-        return $res;
+        return json_encode($res, JSON_UNESCAPED_UNICODE);
     }
 
     public function add(Request $request){
